@@ -1,0 +1,113 @@
+
+
+▎Ramas del Código
+
+1. Rama 1: Generación de Datos Simulados
+
+2. Rama 2: Clasificación usando MLP
+
+3. Rama 3: Clasificación usando k-NN (Binary Relevance)
+
+4. Rama 4: Comparación de Métricas
+
+---
+
+▎Rama 1: Generación de Datos Simulados
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+# Configuración de la semilla
+np.random.seed(42)
+
+# Generar datos simulados
+num_samples = 1000
+num_genres = 5
+
+# Características aleatorias
+X = np.random.rand(num_samples, 10)
+
+# Etiquetas multietiqueta (0 o 1) para géneros de películas
+Y = np.random.randint(0, 2, size=(num_samples, num_genres))
+
+# Convertir a DataFrame para mejor visualización (opcional)
+df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(10)])
+df_labels = pd.DataFrame(Y, columns=[f'genre_{i}' for i in range(num_genres)])
+
+# Dividir en conjunto de entrenamiento y prueba
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+print("Datos generados y divididos exitosamente.")
+
+
+---
+
+▎Rama 2: Clasificación usando MLP
+
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.metrics import AUC
+
+# Crear modelo MLP
+model = Sequential()
+model.add(Dense(64, activation='relu', input_dim=X_train.shape[1]))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(Y_train.shape[1], activation='sigmoid'))  # Salida multietiqueta
+
+# Compilar modelo
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Entrenar modelo
+model.fit(X_train, Y_train, epochs=20, batch_size=32, validation_split=0.1)
+
+print("Modelo MLP entrenado exitosamente.")
+
+
+---
+
+▎Rama 3: Clasificación usando k-NN (Binary Relevance)
+
+from sklearn.neighbors import KNeighborsClassifier
+from skmultilearn.problem_transform import BinaryRelevance
+
+# Crear clasificador k-NN base
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Usar Binary Relevance para la clasificación multietiqueta
+br_knn = BinaryRelevance(knn)
+
+# Entrenar el clasificador
+br_knn.fit(X_train, Y_train)
+
+print("Modelo k-NN entrenado exitosamente.")
+
+
+---
+
+▎Rama 4: Comparación de Métricas
+
+from sklearn.metrics import hamming_loss, jaccard_score
+
+# Predicciones del modelo MLP
+Y_pred_mlp = model.predict(X_test)
+Y_pred_mlp = (Y_pred_mlp > 0.5).astype(int)
+
+# Predicciones del modelo k-NN
+Y_pred_knn = br_knn.predict(X_test)
+
+# Calcular métricas
+hamming_loss_mlp = hamming_loss(Y_test, Y_pred_mlp)
+hamming_loss_knn = hamming_loss(Y_test, Y_pred_knn.toarray())
+
+jaccard_score_mlp = jaccard_score(Y_test, Y_pred_mlp, average='samples')
+jaccard_score_knn = jaccard_score(Y_test, Y_pred_knn.toarray(), average='samples')
+
+print(f"Hamming Loss MLP: {hamming_loss_mlp}")
+print(f"Hamming Loss k-NN: {hamming_loss_knn}")
+print(f"Jaccard Score MLP: {jaccard_score_mlp}")
+print(f"Jaccard Score k-NN: {jaccard_score_knn}")
+
+
+---
+
