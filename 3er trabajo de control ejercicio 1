@@ -1,4 +1,10 @@
-
+Ejercicio 1:  Clasificación Multietiqueta (Géneros de Películas Simulado) - MLP vs. k-NN Multietiqueta
+•  Problema: Predecir múltiples géneros para una película.
+•  Conjunto de Datos: Simulado (como en el prompt original).
+•  Tarea de Red Neuronal: MLP con múltiples salidas sigmoides.
+•  Vinculación con k-NN: * Concepto: k-NN puede adaptarse para clasificación multietiqueta. Una forma simple es MLkNN (Multi-label k-Nearest Neighbors)19 o usando LabelPowerset o BinaryRelevance con un clasificador k-NN base. Scikit-multilearn es una biblioteca útil para esto. Por simplicidad,20 podemos usar BinaryRelevance con KNeighborsClassifier. 
+o  Tarea: Entrenar ambos y comparar métricas como Hamming Loss o Jaccard Score.
+Debe crear cuatro ramas donde en cada una copie el código del programa a realizar.
 
 ▎Ramas del Código
 
