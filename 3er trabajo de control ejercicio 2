@@ -1,0 +1,71 @@
+Ejercicio 2:
+Identifica un problema en tu localidad y argumente, las características del problema,    porque el uso de las redes neuronales puede resolverlo e ilustrar con seudo-código u otra forma como se usaría en esta solución. Pueden ser problemas asociados a: 
+     * La Educación.
+     * La agricultura.
+     * La salud.
+     * La gestión de los servicios públicos y el gobierno popular.
+     * La cultura.
+     * Otro tema de la localidad debidamente argumentado.
+
+
+     ### Problema Identificado: **Optimización de la Distribución de Alimentos en Cuba**  
+**Ámbito:** Agricultura y Gestión de Servicios Públicos  
+
+#### **Características del Problema:**  
+Cuba enfrenta desafíos crónicos en la distribución eficiente de alimentos debido a:  
+1. **Limitaciones logísticas:** Infraestructura vial envejecida, escasez de combustible y transporte.  
+2. **Desperdicio de alimentos:** Pérdidas post-cosecha y en almacenes por mala planificación.  
+3. **Demanda variable:** Diferencias entre producción local y necesidades reales de la población.  
+4. **Centralización:** Toma de decisiones poco ágil basada en datos desactualizados.  
+
+---  
+
+### **¿Por qué usar Redes Neuronales?**  
+1. **Pronóstico de Demanda:**  
+   - Modelos de *series temporales* (ej: LSTM) pueden predecir demanda por región usando datos históricos de consumo, eventos climáticos o turismo.  
+2. **Rutas Óptimas:**  
+   - Redes neuronales combinadas con algoritmos de *optimización* (ej: Grafos) pueden calcular rutas de distribución considerando tráfico, distancia y disponibilidad de transporte.  
+3. **Reducción de Desperdicios:**  
+   - Clasificación con *computer vision* para evaluar calidad de alimentos y priorizar su distribución antes de que se deterioren.  
+
+---  
+
+### **Pseudocódigo: Modelo de Predicción de Demanda**  
+```python  
+# Librerías hipotéticas para un modelo en Cuba  
+import tensorflow as tf  
+from cubadata import load_food_demand_data  # Datos locales de producción/consumo  
+
+# 1. Cargar datos históricos (ej: producción agrícola, ventas en mercados)  
+datos = load_food_demand_data(provincia="La Habana")  
+
+# 2. Preprocesamiento: Normalizar datos y crear secuencias temporales  
+secuencias = crear_secuencias(datos, ventana_temporal=30)  # Últimos 30 días  
+
+# 3. Modelo LSTM para predecir demanda  
+modelo = tf.keras.Sequential([  
+    tf.keras.layers.LSTM(64, input_shape=(30, 1)),  # Capa recurrente  
+    tf.keras.layers.Dense(1)  # Predicción para el próximo día  
+])  
+
+# 4. Entrenar con datos cubanos  
+modelo.compile(optimizer='adam', loss='mse')  
+modelo.fit(secuencias, epochs=50)  
+
+# 5. Usar el modelo para planificar distribución  
+demanda_predicha = modelo.predict(ultimos_datos)  
+print(f"Alimentos necesarios mañana: {demanda_predicha} toneladas")  
+```  
+
+#### **Aplicación Práctica:**  
+- **Input:** Datos de producción de viandas en Matanzas + registros de ventas en La Habana.  
+- **Output:** Predicción de demanda ajustada para evitar escasez o sobrestock.  
+- **Impacto:** Reducción de pérdidas económicas y mejora en la accesibilidad a alimentos.  
+
+---  
+
+### **Beneficios Adicionales**  
+- **Descentralización:** Modelos pueden ejecutarse en servidores locales sin dependencia de internet constante.  
+- **Adaptabilidad:** Aprendizaje continuo con nuevos datos (ej: huracanes, cambios en políticas).  
+
+**Conclusión:** Las redes neuronales ofrecen herramientas para transformar la gestión agrícola en Cuba, combinando datos locales con inteligencia artificial para decisiones más precisas y menos burocráticas.
